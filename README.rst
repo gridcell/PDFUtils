@@ -1,4 +1,5 @@
-A few tools to help work with PDF documents.
+This simple library was basically created so I could add Page X of Y to pdf
+documents that were generated using ReportLab.
 
 
 Requirements
