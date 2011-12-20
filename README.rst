@@ -31,6 +31,83 @@ Example::
 	}
 	pu.addPageNumbers('c:/temp/doc.pdf', 1.05*inch, 0.807*inch, canvas_opts=canvas_opts)
 
+Documentation
+-------------
+
+PDFUtils Class::
+
+   A few tools to help work with PDF documents.
+   
+   Methods defined here:
+   
+   addPageNumbers(self, pdf_doc, x, y, template='Page %(page)s of %(count)s', canvas_opts=None)
+       Add page numbers to a PDF document.
+       
+       pdf_doc: (string)
+               Path to PDF document.
+       x: (integer)
+               X coordinate to place text (in pixels).
+       y: (integer)
+                Y coordinate to place text (in pixels).
+       template: (string)
+               Template to use for page numbers. Uses string formating
+                         with the following options (default: Page %(page)s of %(count)s):
+                       page:
+                               Current page.
+                       count:
+                               Page count for the PDF document.
+       canvas_opts: (dict)
+               Options to apply to the canvas. (default: None)
+               NOTE: Only fillColor and fontSize are currently implemented.
+               Example: canvas_opts = {'fillColor': '#5C9CCC','fontSize': 9}
+               
+       Example:
+               from reportlab.lib.units import inch
+               pu = PDFUtils()
+               canvas_opts = {
+                       'fillColor': '#5C9CCC',
+                       'fontSize': 9
+               }
+               pu.addPageNumbers('c:/temp/doc.pdf', 1.05*inch, 0.807*inch, canvas_opts=canvas_opts)
+   
+   addPdfOverlay(self, pdf_doc, overlay_doc, output_doc, repeatOverlay=False)
+       Essentially merging two PDF documents.
+       
+       pdf_doc: (string)
+               Path to PDF document.
+       overlay_doc: (string)
+               Path to PDF overlay document to overlay pdf_doc.
+       repeatOverlay: (boolean)
+               If set to True, page 1 of the overlay document is repeated
+               for each page of the pdf_doc. (default: False)
+   
+   appendDocuments(self, pdf_docs, output_doc)
+       Append PDF documents together.
+       
+       pdf_docs: (list)
+               List of PDF document paths.
+       
+       output_doc: (string)
+               Path to the outputed PDF document.
+   
+   pdfPageCount(self, pdf_doc)
+       Wrapper to get page count from pdf document.
+       
+       pdf_doc: (string)
+               Path to PDF document.
+   
+   replicatePage(self, pdf_doc, count=1, pageNumber=1)
+       Replicate a page in a document, appends replicated page to
+       the end of the document.
+       
+       pdf_doc: (string)
+               Path to PDF document.
+       count: (integer)
+               Number of times to replicate page. (default 1)
+       pageNumber: (integer)
+               Page number to replicate. (default 1)
+   
+
 
 
 
