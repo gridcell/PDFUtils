@@ -44,9 +44,9 @@ class PDFUtils(object):
 				Path to PDF document.
 		'''
 		pdf = PdfFileReader(file(pdf_doc, "rb"))
-		cnt = pdf.numPages
+		page_count = pdf.numPages
 		pdf.stream.close()
-		return pdf.numPages
+		return page_count
 	
 	def appendDocuments(self, pdf_docs, output_doc):
 		'''
@@ -59,20 +59,20 @@ class PDFUtils(object):
 			Path to the outputed PDF document.
 		'''
 		try:
-			output = PdfFileWriter()
-			pdfs = []
+			outputWriter = PdfFileWriter()
+			pdf_readers = []
 			for doc in pdf_docs:
 				# Need to add new PdfFileReader objects to 
 				# list so stream can be closed after the loop.
-				pdfs.append(PdfFileReader(file(doc , "rb")))
-				for pg in pdfs[-1].pages:
-					output.addPage(pg)
+				pdf_readers.append(PdfFileReader(file(doc , "rb")))
+				for pg in pdf_readers[-1].pages:
+					outputWriter.addPage(pg)
 			# Output
 			outputStream = file(output_doc, "wb")
-			output.write(outputStream)
+			outputWriter.write(outputStream)
 			outputStream.close()
-			for pdf in pdfs:
-				pdf.stream.close()
+			for pdf_reader in pdf_readers:
+				pdf_reader.stream.close()
 			return True
 		except:
 			return False
@@ -89,21 +89,25 @@ class PDFUtils(object):
 			pageNumber: (integer)
 				Page number to replicate. (default 1)
 		'''
-		pdf = PdfFileReader(file(pdf_doc, "rb"))
+		pdf_reader = PdfFileReader(file(pdf_doc, "rb"))
 		page = pdf.getPage(pageNumber-1)
 		pdf_dir = os.path.dirname(pdf_doc)
 		unique_filename = self.__uniqueName()
-		output = PdfFileWriter()
-		for pg in pdf.pages:
-			output.addPage(pg)
-			
+		outputWriter = PdfFileWriter()
+		# Copy oringal pages to new document.
+		for pg in pdf_reader.pages:
+			outputWriter.addPage(pg)
+		
+		# Added replicated pages.
 		for n in range(count):
-			output.addPage(page)
+			outputWriter.addPage(page)
+			
 		# Output
 		temp_file = os.path.join(pdf_dir, unique_filename+".pdf")
 		outputStream = file(temp_file, "wb")
-		output.write(outputStream)
+		outputWriter.write(outputStream)
 		outputStream.close()
+		pdf_reader.stream.close()
 		
 		shutil.move(temp_file, pdf_doc)
 	
@@ -172,16 +176,16 @@ class PDFUtils(object):
 			c.showPage()
 			c.save()
 			
-		# Append all page pdf documents.
+		# Append all page pdf documents
 		pg_num_doc = os.path.join(tempdir_path, '%s.pdf'%self.__uniqueName())
 		self.appendDocuments(numbered_pages, pg_num_doc)
 		
-		# Overlay original pdf document with page number pdf document.
+		# Overlay original pdf document with page number pdf document
 		new_doc = os.path.join(tempdir_path, '%s.pdf'%self.__uniqueName())
 		self.addPdfOverlay(pdf_doc, pg_num_doc, new_doc)
 		
-		# Cleanup the carnage.
-		shutil.move(new_doc, pdf_doc)
+		# Cleanup the carnage
+		shutil.move(new_doc, pdf_doc) # Replace original document with new one.
 		shutil.rmtree(tempdir_path)
 	
 	def addPdfOverlay(self, pdf_doc, overlay_doc, output_doc, repeatOverlay=False):
@@ -203,14 +207,17 @@ class PDFUtils(object):
 			overlay_pages = [pdf_overlay.getPage(0) for n in range(page_cnt)]
 		else:
 			overlay_pages = pdf_overlay.pages
-		output = PdfFileWriter()
+		outputWriter = PdfFileWriter()
 		for n in range(page_cnt):
 			pg = pdf.getPage(n)
 			pg.mergePage(overlay_pages[n])
-			output.addPage(pg)
+			outputWriter.addPage(pg)
+		
 		# Output
 		outputStream = file(output_doc, "wb")
-		output.write(outputStream)
+		outputWriter.write(outputStream)
+		
+		# Close streams
 		outputStream.close()
 		pdf.stream.close()
 		pdf_overlay.stream.close()
