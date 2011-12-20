@@ -1,8 +1,8 @@
 A few tools to help work with PDF documents.
 
 
-Requirements:
-=============
+Requirements
+------------
 
 ReportLab:
 http://pypi.python.org/pypi/reportlab
@@ -12,8 +12,8 @@ http://pypi.python.org/pypi/pyPdf
          
 
 
-Example:
-=======
+Example::
+--------
 
 	from reportlab.lib.units import inch
 	pu = PDFUtils()
@@ -27,8 +27,8 @@ Example:
 
 
 
-License:
-=======
+License
+--------
                     
 Copyright (c) 2011, CTQ Consultants Ltd, http://ctqconsultants.ca
 All rights reserved.
