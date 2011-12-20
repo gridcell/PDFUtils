@@ -13,7 +13,6 @@ http://pypi.python.org/pypi/pyPdf
 
 
 Example::
---------
 
 	from reportlab.lib.units import inch
 	pu = PDFUtils()
