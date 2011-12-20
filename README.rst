@@ -11,6 +11,15 @@ PyPDF:
 http://pypi.python.org/pypi/pyPdf
          
 
+Features
+--------
+* Add Page X of Y to PDF documents.
+* Append PDF documents together.
+* Overlay/Merge two PDF documents.
+
+
+Using
+-----
 
 Example::
 
