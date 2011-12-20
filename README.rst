@@ -29,8 +29,7 @@ Example::
 		'fillColor': '#5C9CCC',
 		'fontSize': 9
 	}
-	shutil.copy('c:/temp/doc.pdf','c:/temp/tt.pdf')
-	pu.addPageNumbers('c:/temp/tt.pdf', 1.05*inch, 0.807*inch, canvas_opts=canvas_opts)
+	pu.addPageNumbers('c:/temp/doc.pdf', 1.05*inch, 0.807*inch, canvas_opts=canvas_opts)
 
 
 
